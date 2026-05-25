@@ -54,4 +54,4 @@ const deleteById = (req,res)=>{
 // }
 
 
-module.exports = {addOrder,findByuserId, deleteById, updateById}
+module.exports = {addOrder,findByuserId, deleteById}
