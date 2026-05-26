@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const cartSchema = new Schema({
     product:{
-        type: Object,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
         required: true
     },
     quantity:{
@@ -11,7 +12,8 @@ const cartSchema = new Schema({
         required: true
     },
     userId:{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true
     }
 })

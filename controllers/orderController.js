@@ -23,7 +23,7 @@ const addOrder = async (req,res)=>{
 const findByuserId = async (req,res) =>{
     try {
         const {id} = req.query
-        const orders = await Orders.find({userId:id}).exec()
+        const orders = await Orders.find({userId:id}).populate("Product").populate("User").exec()
         if(!orders){
             return res.status(404).send("Could not fetch orders")
         }
