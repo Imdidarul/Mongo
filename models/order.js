@@ -1,74 +1,78 @@
-const mongodb = require("mongodb")
-const {getDb} = require("../utils/database")
+const mongoose = require("mongoose")
+const Schema = mongoose.Schema
 
-class Orders {
-    constructor(product,quantity,userId){
-        this.product = product;
-        this.quantity = quantity;
-        this.userId = userId
+
+const orderSchema = new Schema({
+    product:{
+        type: Object,
+        required: true
+    },
+    quantity:{
+        type: Number,
+        required: true
+    },
+    userId:{
+        type: String,
+        required: true
     }
+})
 
-    save(){
-        const db = getDb()
-        return db.collection('orders').insertOne(this)
-        .then( result =>{
-            console.log(result)
-        }).catch((err)=>{
-            console.log(err)
-            throw err
-        })
-    }
-    static findbyId(userId){
-        const db = getDb()
-        return db.collection('orders').find({userId: userId}).toArray().then((order)=>{
-            console.log(order)
-            return order
-        }).catch(err=>{
-            console.log(err)
-            throw err
-        })
-    }
 
-    static findItembyId(id){
-        const db = getDb()
-        return db.collection('orders').find({_id: new mongodb.ObjectId(id)}).next().then((result)=>{
-            console.log(result)
-            return result
-        }).catch(err=>{
-            console.log(err)
-            throw err
-        })
-    }
+module.exports = mongoose.model("Orders",orderSchema)
 
-    static deleteById(orderId){
-        const db = getDb()
 
-        return db.collection('orders').deleteMany({_id: new mongodb.ObjectId(orderId)}).then(result=>{
-            console.log(result.deletedCount)
-            return result.deletedCount
-        }).catch(err=>{
-            console.log(err)
-            throw err
-        })
-    }
+// const mongodb = require("mongodb")
+// const {getDb} = require("../utils/database")
 
-    // static updateById(id, data){
-    //     const db = getDb()
-    //     // const updatedDoc = doc
-    //     console.log(data)
-    //     return db.collection("cart").updateOne(
-    //         {_id:new mongodb.ObjectId(id)},
-    //         {
-    //             $set:data,
-    //             $currentDate:{lastModified: true}
-    //         }
-    //     ).then(result=>{
-    //         console.log("Updated")
-    //         return result
-    //     }).catch(err=>{
-    //         // console.log(err)
-    //         throw err
-    //     })
-    // }
-}
-module.exports = Orders
+// class Orders {
+//     constructor(product,quantity,userId){
+//         this.product = product;
+//         this.quantity = quantity;
+//         this.userId = userId
+//     }
+
+//     save(){
+//         const db = getDb()
+//         return db.collection('orders').insertOne(this)
+//         .then( result =>{
+//             console.log(result)
+//         }).catch((err)=>{
+//             console.log(err)
+//             throw err
+//         })
+//     }
+//     static findbyId(userId){
+//         const db = getDb()
+//         return db.collection('orders').find({userId: userId}).toArray().then((order)=>{
+//             console.log(order)
+//             return order
+//         }).catch(err=>{
+//             console.log(err)
+//             throw err
+//         })
+//     }
+
+//     static findItembyId(id){
+//         const db = getDb()
+//         return db.collection('orders').find({_id: new mongodb.ObjectId(id)}).next().then((result)=>{
+//             console.log(result)
+//             return result
+//         }).catch(err=>{
+//             console.log(err)
+//             throw err
+//         })
+//     }
+
+//     static deleteById(orderId){
+//         const db = getDb()
+
+//         return db.collection('orders').deleteMany({_id: new mongodb.ObjectId(orderId)}).then(result=>{
+//             console.log(result.deletedCount)
+//             return result.deletedCount
+//         }).catch(err=>{
+//             console.log(err)
+//             throw err
+//         })
+//     }
+// }
+// module.exports = Orders

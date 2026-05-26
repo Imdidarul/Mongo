@@ -9,5 +9,6 @@ router.delete("/deleteById",cartController.deleteById)
 router.put("/updateById",cartController.updateById)
 router.put("/increaseCartItemQuantity",cartController.increaseCartItemQuantity)
 router.put("/decreaseCartItemQuantity",cartController.decreaseCartItemQuantity)
+router.get("/addToOrder",cartController.addToOrders)
 
 module.exports = router

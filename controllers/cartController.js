@@ -1,5 +1,5 @@
 const Cart = require("../models/cart")
-
+const Orders = require("../models/order")
 
 const addCartItem = async (req,res)=>{
     try {
@@ -118,7 +118,27 @@ const decreaseCartItemQuantity = async(req,res)=>{
 
 }
 
-module.exports = {addCartItem,findByuserId, deleteById, updateById, increaseCartItemQuantity, decreaseCartItemQuantity}
+
+
+const addToOrders = async (req,res)=>{
+    const {userId} = req.query
+    const cartItems = await Cart.find({userId:userId}).exec()
+    if(!cartItems){
+        return res.status(404).send("Could not be added")
+    }
+    cartItems.forEach(async (item)=>{
+        const id = item._id
+        const product = item.product
+        const quantity = item.quantity
+        const userId = item.userId
+        const order = new Orders({product,quantity,userId})
+        await order.save()
+        await Cart.deleteOne({_id:id}).exec()
+    })
+    res.status(200).send("All cart items added to order")
+}
+
+module.exports = {addCartItem,findByuserId, deleteById, updateById, increaseCartItemQuantity, decreaseCartItemQuantity, addToOrders}
 
 // const addCartItem = (req,res)=>{
 //     const {product, quantity, userId} = req.body
